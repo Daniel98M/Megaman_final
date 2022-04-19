@@ -5,12 +5,20 @@ using Pathfinding;
 
 public class FlyingEnemy : MonoBehaviour
 {
+    [SerializeField] float hp;
     [SerializeField] GameObject player;
+    Animator flyAnim;
+    CircleCollider2D flyCol;
     AIPath myPath;
+    private Player scriptPlayer;
+    bool flyDead = false;
     // Start is called before the first frame update
     void Start()
     {
         myPath = GetComponent<AIPath>();
+        flyAnim = GetComponent<Animator>();
+        flyCol = GetComponent<CircleCollider2D>();
+        scriptPlayer = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -18,10 +26,16 @@ public class FlyingEnemy : MonoBehaviour
     {
         ChasePlayer();
     }
+    IEnumerator Death()
+    {
+        flyAnim.SetBool("isDead", true);
+        yield return new WaitForSeconds(0.9f);
+        Destroy(this.gameObject);
+    }
     void ChasePlayer()
     {
         Collider2D col = Physics2D.OverlapCircle(transform.position, 5f, LayerMask.GetMask("Player"));
-        if (col != null)
+        if (col != null && scriptPlayer.dead == false && !flyDead)
         {
             myPath.isStopped = false;
         }
@@ -34,11 +48,11 @@ public class FlyingEnemy : MonoBehaviour
         {
             if (dirH < 0)
             {
-                transform.localScale = new Vector2(-0.9f, 0.9f);
+                transform.localScale = new Vector2(-1f, 1f);
             }
             else if (dirH > 0)
             {
-                transform.localScale = new Vector2(0.9f, 0.9f);
+                transform.localScale = new Vector2(1f, 1f);
 
             }
         }
@@ -48,5 +62,19 @@ public class FlyingEnemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 5f);
         Gizmos.DrawWireSphere(transform.position, 1f);
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        GameObject go = other.gameObject;
+        if (go.tag == "MBullet")
+        {
+            hp--;
+        }
+        if (hp == 0)
+        {
+            flyCol.enabled = false;
+            flyDead = true;
+            StartCoroutine(Death());
+        }
     }
 }
