@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using TMPro;
 
 public class FlyingEnemy : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class FlyingEnemy : MonoBehaviour
     AIPath myPath;
     private Player scriptPlayer;
     bool flyDead = false;
+    private Contador scriptContador;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,8 @@ public class FlyingEnemy : MonoBehaviour
         flyAnim = GetComponent<Animator>();
         flyCol = GetComponent<CircleCollider2D>();
         scriptPlayer = GameObject.Find("Player").GetComponent<Player>();
+        scriptContador = GameObject.Find("Contador").GetComponent<Contador>();
+        scriptContador.contador ++;
     }
 
     // Update is called once per frame
@@ -29,13 +33,14 @@ public class FlyingEnemy : MonoBehaviour
     IEnumerator Death()
     {
         flyAnim.SetBool("isDead", true);
+        scriptContador.contador--;
         yield return new WaitForSeconds(0.9f);
         Destroy(this.gameObject);
     }
     void ChasePlayer()
     {
         Collider2D col = Physics2D.OverlapCircle(transform.position, 5f, LayerMask.GetMask("Player"));
-        if (col != null && scriptPlayer.dead == false && !flyDead)
+        if (col != null && !flyDead)
         {
             myPath.isStopped = false;
         }

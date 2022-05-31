@@ -8,20 +8,21 @@ public class Turret : MonoBehaviour
     [SerializeField] float range = 5f;
     [SerializeField] float hp;
     [SerializeField] GameObject bullet;
-    private Player scriptPlayer;
     BoxCollider2D turrCol;
     Rigidbody2D turrBody;
     Animator turrAnim;
     bool onAim = false;
     private float nextFire = 0f;
     bool turrDead = false;
+    private Contador scriptContador;
     // Start is called before the first frame update
     void Start()
     {
         turrCol = GetComponent<BoxCollider2D>();
         turrAnim = GetComponent<Animator>();
         turrBody = GetComponent<Rigidbody2D>();
-        scriptPlayer = GameObject.Find("Player").GetComponent<Player>();
+        scriptContador = GameObject.Find("Contador").GetComponent<Contador>();
+        scriptContador.contador++;
     }
 
     // Update is called once per frame
@@ -33,6 +34,7 @@ public class Turret : MonoBehaviour
     IEnumerator Death()
     {
         turrAnim.SetBool("isDead", true);
+        scriptContador.contador--;
         yield return new WaitForSeconds(1.2f);
         Destroy(this.gameObject);
     }
@@ -46,7 +48,7 @@ public class Turret : MonoBehaviour
     }
     void Fire()
     {
-        if (onAim && Time.time > nextFire && !turrDead && scriptPlayer.dead == false)
+        if (onAim && Time.time > nextFire && !turrDead)
         {
             nextFire = Time.time + fireRate;
             Instantiate(bullet, transform.position, transform.rotation);

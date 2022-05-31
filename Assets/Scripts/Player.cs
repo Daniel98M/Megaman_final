@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     {
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
+        Time.timeScale = 1;
 
     }
     IEnumerator Shooting()
@@ -41,9 +42,9 @@ public class Player : MonoBehaviour
     }
     IEnumerator DeathCorrutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         AudioSource.PlayClipAtPoint(death_clip, transform.position);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         RestartGame();
     }
 
@@ -52,11 +53,8 @@ public class Player : MonoBehaviour
     {
         Death();
         Grounded();
-        if (!dead)
-        {
-            Jump();
-            Fire();
-        }    
+        Jump();
+        Fire();
     }
     void Grounded()
     {
@@ -122,10 +120,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!dead)
-        {
-            Move();
-        }
+        Move();
     }
     void Move()
     {
@@ -172,7 +167,7 @@ public class Player : MonoBehaviour
     {
         if (dead && !reset)
         {
-            myBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+            Time.timeScale = 0;
             StartCoroutine(DeathCorrutine());
             myAnim.SetBool("isDead", true);
             reset = true;
