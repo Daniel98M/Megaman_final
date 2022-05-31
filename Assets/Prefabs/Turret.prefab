@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 3
-  range: 5
+  range: 10
   hp: 5
   bullet: {fileID: 5921863147126572418, guid: 091e2312381c1044caa8529320578b44, type: 3}
 --- !u!95 &-1189022681743632886

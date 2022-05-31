@@ -5,7 +5,7 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [SerializeField] float fireRate = 1f;
-    [SerializeField] float range = 5f;
+    [SerializeField] float range = 10f;
     [SerializeField] float hp;
     [SerializeField] GameObject bullet;
     BoxCollider2D turrCol;
