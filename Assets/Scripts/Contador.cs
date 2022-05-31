@@ -28,6 +28,6 @@ public class Contador : MonoBehaviour
     void endGame()
     {
         Time.timeScale = 0;
-        SceneManager.LoadScene(0);//Reemplazar por la escena requerida
+        SceneManager.LoadScene(2);//Reemplazar por la escena requerida
     }
 }

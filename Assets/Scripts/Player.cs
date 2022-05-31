@@ -90,6 +90,7 @@ public class Player : MonoBehaviour
             {
                 direction = false;
             }
+            SoundManagerScript.PlaySound("bullet");
             Instantiate(bullet, transform.position, transform.rotation);
             StartCoroutine(Shooting());
         }
@@ -104,6 +105,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 myBody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                SoundManagerScript.PlaySound("jump");
                 jump = true;
             }
         }
@@ -167,6 +169,7 @@ public class Player : MonoBehaviour
     {
         if (dead && !reset)
         {
+            SoundManagerScript.PlaySound("death");
             Time.timeScale = 0;
             StartCoroutine(DeathCorrutine());
             myAnim.SetBool("isDead", true);

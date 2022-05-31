@@ -32,6 +32,7 @@ public class FlyingEnemy : MonoBehaviour
     }
     IEnumerator Death()
     {
+        SoundManagerScript.PlaySound("enemyDeath");
         flyAnim.SetBool("isDead", true);
         scriptContador.contador--;
         yield return new WaitForSeconds(0.9f);

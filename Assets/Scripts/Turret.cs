@@ -33,6 +33,7 @@ public class Turret : MonoBehaviour
     }
     IEnumerator Death()
     {
+        SoundManagerScript.PlaySound("enemyDeath");
         turrAnim.SetBool("isDead", true);
         scriptContador.contador--;
         yield return new WaitForSeconds(1.2f);
@@ -50,6 +51,7 @@ public class Turret : MonoBehaviour
     {
         if (onAim && Time.time > nextFire && !turrDead)
         {
+            SoundManagerScript.PlaySound("bullet");
             nextFire = Time.time + fireRate;
             Instantiate(bullet, transform.position, transform.rotation);
         }
